@@ -13,6 +13,7 @@
 - [Como instalar o kubectl e kind](#como-instalar-o-kubectl-e-kind)
 - [Criando um cluster com kind usando YAML](#criando-um-cluster-com-kind-usando-yaml)
 - [Criação de Pods no Kubernetes](#criação-de-pods-no-kubernetes)
+- [ReplicaSet no Kubernetes](#replicaset-no-kubernetes)
 
 # **Kubernetes**
 
@@ -171,5 +172,11 @@ Ele abstrai infraestrutura e fornece uma camada padrão para execução de aplic
 # Criação de Pods no Kubernetes
 
 [Criação de Pods no Kubernetes](CriacaoDePodsNoKubernetes.md)
+
+---
+
+# ReplicaSet no Kubernetes
+
+[ReplicaSet no Kubernetes](ReplicaSetNoKubernetes.md)
 
 ---
