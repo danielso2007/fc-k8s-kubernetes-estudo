@@ -12,6 +12,7 @@
 - [Estrutura Fundamental do Kubernetes](#estrutura-fundamental-do-kubernetes)
 - [Como instalar o kubectl e kind](#como-instalar-o-kubectl-e-kind)
 - [Criando um cluster com kind usando YAML](#criando-um-cluster-com-kind-usando-yaml)
+- [Criação de Pods no Kubernetes](#criação-de-pods-no-kubernetes)
 
 # **Kubernetes**
 
@@ -167,3 +168,8 @@ Ele abstrai infraestrutura e fornece uma camada padrão para execução de aplic
 
 ---
 
+# Criação de Pods no Kubernetes
+
+[Criação de Pods no Kubernetes](CriacaoDePodsNoKubernetes.md)
+
+---

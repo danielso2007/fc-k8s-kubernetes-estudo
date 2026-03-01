@@ -1,0 +1,22 @@
+apiVersion: v1  
+kind: Pod
+
+metadata:  
+ name: hello-k8s  
+ labels:  
+   app: hello-k8s
+
+spec:  
+ containers:  
+   - name: hello-k8s  
+     image: hello-k8s:latest  
+     imagePullPolicy: IfNotPresent  
+     ports:  
+       - containerPort: 8080  
+     resources:  
+       requests:  
+         memory: "128Mi"  
+         cpu: "100m"  
+       limits:  
+         memory: "512Mi"  
+         cpu: "500m"
