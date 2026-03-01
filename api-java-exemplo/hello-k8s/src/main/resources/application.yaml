@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: hello-k8s
+  main:
+    # Mantive true para acelerar o startup, mas cuidado com erros escondidos
+    lazy-initialization: true 
+  
+  # 1. Configuração de JSON e Internacionalização
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: UTC
+
+server:
+  port: 8080
+  servlet:
+    context-path: /${spring.application.name}
+  # Graceful shutdown para o Kubernetes não matar processos no meio
+  shutdown: graceful
+
+# 3. Observabilidade com Actuator (Essencial para K8s)
+management:
+  endpoints:
+    web:
+      exposure:
+        # Expondo os principais para monitoramento
+        include: health, info, metrics, prometheus 
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        # Habilita /health/liveness e /health/readiness para o K8s
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# 4. Detalhamento de Logs
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+
+# 5. Informações da Aplicação (Aparecem no endpoint /info)
+info:
+  app:
+    name: ${spring.application.name}
+    description: "Aplicação Spring Boot rodando no Kubernetes"
+    version: 1.0.0
