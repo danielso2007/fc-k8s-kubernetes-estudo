@@ -1,3 +1,31 @@
+- [**Services no Kubernetes**](#services-no-kubernetes)
+- [**1️⃣ O que é um Service**](#1️⃣-o-que-é-um-service)
+- [**2️⃣ Problema que ele resolve**](#2️⃣-problema-que-ele-resolve)
+- [**3️⃣ Tipos de Service**](#3️⃣-tipos-de-service)
+- [**4️⃣ Como funciona internamente**](#4️⃣-como-funciona-internamente)
+- [**5️⃣ YAML do Service (ClusterIP)**](#5️⃣-yaml-do-service-clusterip)
+  - [**📄 `service.yml`**](#-serviceyml)
+- [**6️⃣ Explicação detalhada**](#6️⃣-explicação-detalhada)
+  - [**apiVersion: v1**](#apiversion-v1)
+  - [**kind: Service**](#kind-service)
+  - [**metadata.name**](#metadataname)
+  - [**spec.type**](#spectype)
+  - [**spec.selector**](#specselector)
+  - [**spec.ports**](#specports)
+- [**7️⃣ Criar o Service**](#7️⃣-criar-o-service)
+- [**8️⃣ Verificar**](#8️⃣-verificar)
+- [**9️⃣ Ver endpoints**](#9️⃣-ver-endpoints)
+- [**🔟 Testar dentro do cluster**](#-testar-dentro-do-cluster)
+- [**1️⃣1️⃣ Expor externamente (NodePort)**](#1️⃣1️⃣-expor-externamente-nodeport)
+- [**1️⃣2️⃣ Fluxo Interno Completo**](#1️⃣2️⃣-fluxo-interno-completo)
+- [**1️⃣3️⃣ Relação com Deployment**](#1️⃣3️⃣-relação-com-deployment)
+- [**1️⃣4️⃣ Atualização dinâmica**](#1️⃣4️⃣-atualização-dinâmica)
+- [**1️⃣5️⃣ Conceitos avançados**](#1️⃣5️⃣-conceitos-avançados)
+    - [**Headless Service**](#headless-service)
+- [**📌 Resumo Técnico**](#-resumo-técnico)
+- [**🎯 Conceito Fundamental**](#-conceito-fundamental)
+
+
 # **Services no Kubernetes**
 
 Base: Kubernetes  

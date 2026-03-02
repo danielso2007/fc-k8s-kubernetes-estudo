@@ -17,6 +17,7 @@
 - [Deployment no Kubernetes](#deployment-no-kubernetes)
 - [Services no Kubernetes](#services-no-kubernetes)
 - [kubectl proxy](#kubectl-proxy)
+- [Service Type: LoadBalancer](#service-type-loadbalancer)
 
 
 # **Kubernetes**
@@ -201,3 +202,8 @@ Ele abstrai infraestrutura e fornece uma camada padrão para execução de aplic
 
 [kubectl proxy](kubectlProxy.md)
 
+---
+
+# Service Type: LoadBalancer
+
+[Service Type: LoadBalancer](ServiceTypeLoadBalancer.md)
