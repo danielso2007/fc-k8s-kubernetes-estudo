@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: hello-k8s-config
+  labels:
+    app: hello-k8s
+
+data:
+  APP_MESSAGE: "Hello World from ConfigMap"
+  APP_ENV: "dev"

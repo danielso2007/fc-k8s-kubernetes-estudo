@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: hello-k8s-config-v2
+
+data:
+  application.properties: |
+    app.message=Hello from file  
+    app.env=dev
+  log.level: "INFO"

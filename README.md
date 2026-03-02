@@ -18,6 +18,8 @@
 - [Services no Kubernetes](#services-no-kubernetes)
 - [kubectl proxy](#kubectl-proxy)
 - [Service Type: LoadBalancer](#service-type-loadbalancer)
+- [Configuração no Kubernetes (ConfigMap e Variáveis de Ambiente)](#configuração-no-kubernetes-configmap-e-variáveis-de-ambiente)
+- [ConfigMap como Volume (Deep Dive)](#configmap-como-volume-deep-dive)
 
 
 # **Kubernetes**
@@ -207,3 +209,15 @@ Ele abstrai infraestrutura e fornece uma camada padrão para execução de aplic
 # Service Type: LoadBalancer
 
 [Service Type: LoadBalancer](ServiceTypeLoadBalancer.md)
+
+---
+
+# Configuração no Kubernetes (ConfigMap e Variáveis de Ambiente)
+
+[Configuração no Kubernetes (ConfigMap e Variáveis de Ambiente)](ConfiguracaoNoKubernetes.md)
+
+---
+
+# ConfigMap como Volume (Deep Dive)
+
+[ConfigMap como Volume (Deep Dive)](ConfigMapComoVolume.md)
