@@ -14,6 +14,7 @@
 - [Criando um cluster com kind usando YAML](#criando-um-cluster-com-kind-usando-yaml)
 - [Criação de Pods no Kubernetes](#criação-de-pods-no-kubernetes)
 - [ReplicaSet no Kubernetes](#replicaset-no-kubernetes)
+- [Deployment no Kubernetes](#deployment-no-kubernetes)
 
 # **Kubernetes**
 
@@ -180,3 +181,7 @@ Ele abstrai infraestrutura e fornece uma camada padrão para execução de aplic
 [ReplicaSet no Kubernetes](ReplicaSetNoKubernetes.md)
 
 ---
+
+# Deployment no Kubernetes
+
+[Deployment no Kubernetes](DeploymentNoKubernetes.md)
