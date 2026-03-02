@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IMAGE_NAME=hello-k8s
-VERSION=0.0.1
+VERSION=0.0.2
 
 echo "🔨 Buildando imagem..."
 docker build -t ${IMAGE_NAME}:${VERSION} .

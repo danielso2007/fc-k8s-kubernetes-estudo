@@ -15,6 +15,9 @@
 - [Criação de Pods no Kubernetes](#criação-de-pods-no-kubernetes)
 - [ReplicaSet no Kubernetes](#replicaset-no-kubernetes)
 - [Deployment no Kubernetes](#deployment-no-kubernetes)
+- [Services no Kubernetes](#services-no-kubernetes)
+- [kubectl proxy](#kubectl-proxy)
+
 
 # **Kubernetes**
 
@@ -185,3 +188,16 @@ Ele abstrai infraestrutura e fornece uma camada padrão para execução de aplic
 # Deployment no Kubernetes
 
 [Deployment no Kubernetes](DeploymentNoKubernetes.md)
+
+---
+
+# Services no Kubernetes
+
+[Services no Kubernetes](ServicesNoKubernetes.md)
+
+---
+
+# kubectl proxy
+
+[kubectl proxy](kubectlProxy.md)
+

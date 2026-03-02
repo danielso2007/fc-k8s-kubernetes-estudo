@@ -17,7 +17,6 @@
 - [**6️⃣ Verificar**](#6️⃣-verificar)
 - [**7️⃣ Inspecionar**](#7️⃣-inspecionar)
 - [**8️⃣ Escalar Deployment**](#8️⃣-escalar-deployment)
-  - [ReplicaSet ajusta número de Pods](#replicaset-ajusta-número-de-pods)
 - [**9️⃣ Atualizar imagem (Rolling Update)**](#9️⃣-atualizar-imagem-rolling-update)
 - [**🔟 Histórico e Rollback**](#-histórico-e-rollback)
 - [**1️⃣1️⃣ Fluxo Interno Completo**](#1️⃣1️⃣-fluxo-interno-completo)
@@ -93,11 +92,11 @@ spec:
        app: hello-k8s  
    spec:  
      containers:  
-       \- name: hello-k8s  
+       - name: hello-k8s  
          image: hello-k8s:latest  
          imagePullPolicy: IfNotPresent  
          ports:  
-           \- containerPort: 8080  
+           - containerPort: 8080  
          resources:  
            requests:  
              memory: "128Mi"  
@@ -209,7 +208,7 @@ Kubelet impõe `limits` via cgroups.
 
 # **5️⃣ Criar Deployment**
 ```bash
-kubectl apply -f deployment-hello.yml  
+kubectl apply -f deployment.yml  
 ```
 ---
 
@@ -247,15 +246,16 @@ Mostra:
 kubectl scale deployment hello-k8s --replicas=5
 ```
 O que acontece:
-
+```
 Deployment atualiza spec.replicas  
    ↓  
 ReplicaSet ajusta número de Pods  
+```
 ---
 
 # **9️⃣ Atualizar imagem (Rolling Update)**
 ```bash
-kubectl set image deployment/hello-k8s hello-k8s=hello-k8s:v2
+kubectl set image deployment/hello-k8s hello-k8s=hello-k8s:0.0.2
 ```
 Fluxo interno:
 ```
@@ -271,7 +271,9 @@ Quando concluído → RS antigo escala para 0
 ```
 Ver rollout:
 ```bash
-kubectl rollout status deployment hello-k8s  
+kubectl rollout status deployment hello-k8s
+
+kubectl annotate deployment hello-k8s kubernetes.io/change-cause="Atualizando imagem para v2"
 ```
 ---
 
