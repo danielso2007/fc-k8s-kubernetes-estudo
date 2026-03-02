@@ -3,13 +3,15 @@ package com.example.hello_k8s.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 @Tag(name = "Hello API", description = "Endpoints de saudação e verificação de status")
 public class HelloController {
@@ -21,6 +23,7 @@ public class HelloController {
     @ApiResponse(responseCode = "200", description = "API está online")
     @GetMapping("/v1/")
     public ResponseEntity<String> healthCheck() {
+        log.info("Chamada recebida no endpoint de Health Check");
         return ResponseEntity.ok("ok");
     }
 
@@ -31,6 +34,7 @@ public class HelloController {
     @ApiResponse(responseCode = "200", description = "Mensagem retornada com sucesso")
     @GetMapping("/v1/hello")
     public ResponseEntity<Map<String, String>> hello() {
+        log.info("Chamada recebida no endpoint /v1/hello");
         return ResponseEntity.ok(Map.of("message", "Hello World"));
     }
 }
