@@ -15,7 +15,7 @@ fi
 
 echo "📦 Buildando imagem..."
 
-pushd ../api-java-exemplo/hello-k8s > /dev/null
+pushd api-java-exemplo/hello-k8s > /dev/null
 docker build -t $IMAGE_NAME .
 popd > /dev/null
 
