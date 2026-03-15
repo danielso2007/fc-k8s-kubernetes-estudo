@@ -75,4 +75,27 @@ public class HelloController {
         
         return ResponseEntity.ok(mongoSecrets);
     }
+
+    @Operation(
+        summary = "Força a falha da aplicação", 
+        description = "Gera um erro fatal que encerra a JVM em 5 segundos, forçando o restart do Pod pelo Kubernetes"
+    )
+    @ApiResponse(responseCode = "200", description = "Falha agendada com sucesso")
+    @GetMapping("/v1/crash")
+    public ResponseEntity<String> forceCrash() {
+        log.error("⚠️ ALERTA: Comando de crash recebido! O Pod será encerrado em 5 segundos...");
+
+        // Criamos uma Thread separada para não travar a resposta HTTP
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000); // Aguarda 5 segundos
+                log.error("💥 Crash iminente. Encerrando JVM...");
+                System.exit(1); // Finaliza o processo com erro, forçando o K8s a reiniciar
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
+
+        return ResponseEntity.ok("O container será reiniciado em 5 segundos. Tchau!");
+    }
 }

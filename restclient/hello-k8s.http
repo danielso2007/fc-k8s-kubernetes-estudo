@@ -1,0 +1,22 @@
+### Configurações
+@baseUrl = http://localhost:8080/hello-k8s
+
+### Check de disponibilidade
+# Endpoint simples para verificar se a API está respondendo na raiz
+GET {{baseUrl}}/v1/
+
+### Retorna saudação padrão
+# Retorna um objeto JSON com a mensagem clássica de Hello World
+GET {{baseUrl}}/v1/hello
+
+### Lista variáveis de ambiente
+# Retorna todas as variáveis de ambiente do sistema onde o container está rodando
+GET {{baseUrl}}/v1/env
+
+### Busca credenciais do MongoDB
+# Retorna especificamente as variáveis de usuário e senha do MongoDB configuradas no ambiente
+GET {{baseUrl}}/v1/secrets
+
+### Força a falha da aplicação
+# Gera um erro fatal que encerra a JVM em 5 segundos, forçando o restart do Pod pelo Kubernetes
+GET {{baseUrl}}/v1/crash

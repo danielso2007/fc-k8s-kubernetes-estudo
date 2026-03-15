@@ -1,62 +1,91 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1          # Especifica a versão da API (apps/v1 é o padrão estável para Deployments)
+kind: Deployment             # Define o tipo de recurso: um controlador que gerencia o estado dos Pods
 
-metadata:
-  name: hello-k8s
-  labels:
-    app: hello-k8s
+metadata:                    # Seção de metadados para identificar o objeto no cluster
+  name: hello-k8s            # O nome único deste Deployment (usado para comandos como 'kubectl get')
+  labels:                    # Etiquetas de identificação (chave: valor) para organização
+    app: hello-k8s           # Label principal que agrupa este recurso
 
-spec:
-  replicas: 3
+spec:                        # Especificação do estado desejado do Deployment
+  replicas: 3                # Define que o Kubernetes deve manter sempre 3 instâncias (Pods) rodando
+                             # 
+  selector:                  # Define como o Deployment encontra os Pods que ele deve gerenciar
+    matchLabels:             # O critério de seleção baseado em labels
+      app: hello-k8s         # Só gerencia Pods que tenham EXATAMENTE esta label
 
-  selector:
-    matchLabels:
-      app: hello-k8s
+  strategy:                  # Define como o K8s deve se comportar durante uma atualização de versão
+    type: RollingUpdate      # Atualização progressiva (sobe novos e mata antigos aos poucos)
+    rollingUpdate:           # Configurações finas do Rolling Update
+      maxUnavailable: 1      # Número máximo de Pods que podem ficar fora do ar durante o update
+      maxSurge: 1            # Número de Pods extras que podem ser criados acima do limite durante o update
 
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+  template:                  # O "molde" (blueprint) que define como os Pods serão criados
+    metadata:                # Metadados que serão aplicados a cada Pod individual
+      labels:                # Labels do Pod (DEVEM coincidir com o 'selector' acima)
+        app: hello-k8s       # Etiqueta que vincula o Pod ao Deployment pai
+    spec:                    # Especificação técnica de dentro do Pod
+      containers:            # Lista de containers que rodarão dentro do Pod
+        - name: hello-k8s    # Nome do container específico
+          image: hello-k8s:latest         # URL da imagem Docker no registro (tag latest)
+          imagePullPolicy: IfNotPresent   # Só baixa a imagem da web se ela não existir no nó local
+          ports:                          # Lista de portas que o container utiliza
+            - containerPort: 8080         # Porta interna onde a aplicação escuta o tráfego
 
-  template:
-    metadata:
-      labels:
-        app: hello-k8s
-    spec:
-      containers:
-        - name: hello-k8s
-          image: hello-k8s:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8080
-          volumeMounts:
-            - name: config-volume
-              mountPath: /config
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "100m"
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
-          envFrom:
-            - secretRef:
-                 name: hello-k8s-secret
-          env:
-            - name: APP_MESSAGE
-              valueFrom:
-                configMapKeyRef:
-                  name: hello-k8s-config
-                  key: APP_MESSAGE
+          startupProbe:                          # Checagem de inicialização (roda antes de todas as outras)
+            httpGet:                             # Tipo de teste: Requisição HTTP GET
+              path: /hello-k8s/actuator/health   # Caminho do endpoint de saúde
+              port: 8080                         # Porta para o teste
+            failureThreshold: 30                 # Quantidade de falhas permitidas antes de reiniciar o container
+            periodSeconds: 5                     # Intervalo em segundos entre cada teste (30x5s = 150s total)
 
-            - name: APP_ENV
-              valueFrom:
-                configMapKeyRef:
-                  name: hello-k8s-config
-                  key: APP_ENV
+          readinessProbe:                                  # Checagem de prontidão (define se o Pod pode receber usuários)
+            httpGet:                                       # Tipo de teste: HTTP GET
+              path: /hello-k8s/actuator/health/readiness   # Caminho do endpoint
+              port: 8080                                   # Porta para o teste
+            initialDelaySeconds: 10                        # Quantos segundos esperar após o boot para iniciar este teste
+            periodSeconds: 5                               # Frequência do teste (se falhar, o Pod sai do balanceador)
+            timeoutSeconds: 2                              # Tempo máximo de resposta
+            failureThreshold: 2                            # Número de falhas antes de reiniciar
 
-      volumes:
-        - name: config-volume
-          configMap:
-            name: hello-k8s-config-v2
+          livenessProbe:                                   # Checagem de vida (detecta se a app travou ou entrou em deadlock)
+            httpGet:                                       # Tipo de teste: HTTP GET
+              path: /hello-k8s/actuator/health/liveness    # Caminho do endpoint
+              port: 8080                                   # Porta para o teste
+            initialDelaySeconds: 20                        # Espera 20s para começar (dá tempo da app se estabilizar)
+            periodSeconds: 10                              # Frequência (se falhar aqui, o K8s mata e recria o container)
+            timeoutSeconds: 2                              # Tempo máximo de resposta
+            failureThreshold: 2                            # Número de falhas antes de reiniciar
+
+          volumeMounts:                   # Onde os volumes externos serão montados no container
+            - name: config-volume         # Nome do volume declarado lá embaixo na seção 'volumes'
+              mountPath: /config          # Pasta dentro do Linux do container onde os arquivos aparecerão
+
+          resources:                      # Gerenciamento de CPU e Memória (essencial para o cluster)
+            requests:                     # O "piso": recurso garantido que o nó deve ter livre para o Pod entrar
+              memory: "128Mi"             # Reserva 128 Megabytes de RAM
+              cpu: "100m"                 # Reserva 0.1 (10%) de um núcleo de CPU
+            limits:                       # O "teto": recurso máximo que o container pode consumir
+              memory: "256Mi"             # Se passar disso, o container sofre OOMKill (reinicia)
+              cpu: "500m"                 # Se passar disso, o container sofre Throttling (fica lento)
+
+          envFrom:                        # Injeta múltiplas variáveis de ambiente de uma vez
+            - secretRef:                  # Referência a um objeto do tipo Secret (dados sensíveis)
+                 name: hello-k8s-secret   # Nome do Secret que contém as chaves (ex: senhas em base64)
+
+          env:                            # Definição manual/individual de variáveis de ambiente
+            - name: APP_MESSAGE           # Nome da variável que o código da app vai ler (ex: System.getenv)
+              valueFrom:                  # Indica que o valor vem de uma fonte externa (não é texto fixo)
+                configMapKeyRef:          # A fonte é uma chave dentro de um ConfigMap
+                  name: hello-k8s-config  # Nome do ConfigMap alvo
+                  key: APP_MESSAGE        # Nome da chave dentro desse ConfigMap
+                                          # 
+            - name: APP_ENV               # Outra variável de ambiente
+              valueFrom:                  # Indica busca dinâmica do valor
+                configMapKeyRef:          # Referência ao ConfigMap
+                  name: hello-k8s-config  # Nome do recurso
+                  key: APP_ENV            # Chave específica
+
+      volumes:                            # Declaração dos volumes que o Pod pode usar
+        - name: config-volume             # Nome lógico do volume (usado no volumeMounts acima)
+          configMap:                      # Define que a origem dos dados é um ConfigMap
+            name: hello-k8s-config-v2     # O nome real do ConfigMap que contém os arquivos de config

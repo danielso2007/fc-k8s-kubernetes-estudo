@@ -21,6 +21,7 @@
 - [Configuração no Kubernetes (ConfigMap e Variáveis de Ambiente)](#configuração-no-kubernetes-configmap-e-variáveis-de-ambiente)
 - [ConfigMap como Volume (Deep Dive)](#configmap-como-volume-deep-dive)
 - [Secrets e Variáveis de Ambiente no Kubernetes](#secrets-e-variáveis-de-ambiente-no-kubernetes)
+- [Probes, Health Checks, Liveness, Readiness e StartupProbe no Kubernetes](#probes-health-checks-liveness-readiness-e-startupprobe-no-kubernetes)
 
 
 # **Kubernetes**
@@ -229,3 +230,8 @@ Ele abstrai infraestrutura e fornece uma camada padrão para execução de aplic
 
 [Secrets e Variáveis de Ambiente no Kubernetes](SecretsVariaveisDembienteKubernetes.md)
 
+---
+
+# Probes, Health Checks, Liveness, Readiness e StartupProbe no Kubernetes
+
+[Probes, Health Checks, Liveness, Readiness e StartupProbe no Kubernetes](ProbesHealthChecksKubernetes.md)
