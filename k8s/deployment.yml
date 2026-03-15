@@ -8,13 +8,14 @@ metadata:                    # Seção de metadados para identificar o objeto no
 
 spec:                        # Especificação do estado desejado do Deployment
   replicas: 2                # Define que o Kubernetes deve manter sempre 3 instâncias (Pods) rodando
-                             # 
+
   selector:                  # Define como o Deployment encontra os Pods que ele deve gerenciar
     matchLabels:             # O critério de seleção baseado em labels
       app: hello-k8s         # Só gerencia Pods que tenham EXATAMENTE esta label
 
   strategy:                  # Define como o K8s deve se comportar durante uma atualização de versão
-    type: RollingUpdate      # Atualização progressiva (sobe novos e mata antigos aos poucos)
+    type: RollingUpdate    # Atualização progressiva (sobe novos e mata antigos aos poucos)
+    # type: Recreate           # Mata todos os pods antigos antes de criar os novos
     rollingUpdate:           # Configurações finas do Rolling Update
       maxUnavailable: 1      # Número máximo de Pods que podem ficar fora do ar durante o update
       maxSurge: 1            # Número de Pods extras que podem ser criados acima do limite durante o update
@@ -24,9 +25,10 @@ spec:                        # Especificação do estado desejado do Deployment
       labels:                # Labels do Pod (DEVEM coincidir com o 'selector' acima)
         app: hello-k8s       # Etiqueta que vincula o Pod ao Deployment pai
     spec:                    # Especificação técnica de dentro do Pod
+      terminationGracePeriodSeconds: 5 # Reduz o tempo de espera para matar o pod antigo
       containers:            # Lista de containers que rodarão dentro do Pod
         - name: hello-k8s    # Nome do container específico
-          image: hello-k8s:0.6.0         # URL da imagem Docker no registro (tag latest)
+          image: hello-k8s:latest
           imagePullPolicy: IfNotPresent   # Só baixa a imagem da web se ela não existir no nó local
           ports:                          # Lista de portas que o container utiliza
             - containerPort: 8080         # Porta interna onde a aplicação escuta o tráfego

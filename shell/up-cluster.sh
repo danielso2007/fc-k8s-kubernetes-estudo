@@ -2,8 +2,9 @@
 set -e
 
 CLUSTER_NAME="lab-cluster"
-KIND_CONFIG="./cluster/kind.yml"
+KIND_CONFIG="k8s/cluster/kind.yml"
 IMAGE_NAME="hello-k8s:latest"
+ICON_ROCKET='🚀'; ICON_BUILD='📦'; ICON_LOAD='📤'; ICON_YAML='📄'; ICON_WAIT='⏳'; ICON_CHECK='✅'
 
 echo "🚀 Criando cluster kind..."
 
@@ -22,14 +23,26 @@ popd > /dev/null
 echo "📤 Carregando imagem no kind..."
 kind load docker-image $IMAGE_NAME --name $CLUSTER_NAME
 
+echo -e "${YELLOW}🧹 Limpando recursos antigos para evitar conflitos...${NC}"
+# Deleta o deployment mas mantém o resto (ou use delete -f ./k8s se quiser limpar tudo)
+kubectl delete deployment hello-k8s --ignore-not-found=true
+
+# Aguarda um pouco para o K8s processar a limpeza
+sleep 5
+
 echo "📄 Aplicando manifestos Kubernetes..."
-kubectl apply -f .
+kubectl apply -f ./k8s
 
-echo "⏳ Aguardando rollout..."
-kubectl rollout status deployment hello-k8s --timeout=120s
+echo -e "${BLUE}${ICON_WAIT} Aguardando estabilização do Deployment...${NC}"
+sleep 2
 
-echo "⏳ Aguardando pods ficarem Ready..."
-kubectl wait --for=condition=Ready pod -l app=hello-k8s --timeout=120s
+echo -e "${BLUE}${ICON_WAIT} Aguardando rollout...${NC}"
+# O rollout status já garante que o novo ReplicaSet esteja pronto e os pods antigos removidos
+if ! kubectl rollout status deployment hello-k8s --timeout=60s; then
+    echo -e "${RED}❌ Erro: O Rollout falhou ou expirou tempo limite.${NC}"
+    kubectl describe deployment hello-k8s
+    exit 1
+fi
 
 echo ""
 echo "==================== 📊 ESTADO DO CLUSTER ===================="
@@ -65,4 +78,4 @@ echo ""
 
 echo "==============================================================="
 echo ""
-echo "✅ Ambiente pronto."
+echo -e "${GREEN}${ICON_CHECK} Ambiente pronto.${NC}"

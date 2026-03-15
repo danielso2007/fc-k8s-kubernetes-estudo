@@ -69,8 +69,8 @@ fi
 # --- EXECUÇÃO DO MONITORAMENTO ---
 # EXPLICAÇÃO DAS FLAGS:
 # --selector: Filtra os pods pela label informada no topo do script.
-# --tail 20:   Recupera as últimas 20 linhas de log de cada pod assim que inicia.
+# --tail 20:   Recupera as últimas 40 linhas de log de cada pod assim que inicia.
 # (Opcional) --color always: Força a saída colorida mesmo através de pipes.
 # Nota: O Stern monitora automaticamente novos pods que surgirem com essa label.
 
-stern --selector "$APP_LABEL" --tail 20
+stern --selector "$APP_LABEL" --tail 40

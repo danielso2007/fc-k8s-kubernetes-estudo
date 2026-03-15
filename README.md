@@ -1,3 +1,19 @@
+- [📖 Guia de Referência: Menu de Ações](#-guia-de-referência-menu-de-ações)
+  - [💡 Como utilizar](#-como-utilizar)
+  - [🏗️ Cluster \& Deploy](#️-cluster--deploy)
+    - [1) `up-cluster.sh`](#1-up-clustersh)
+    - [2) `reset-cluster.sh`](#2-reset-clustersh)
+    - [3) `build-api-java-exemplo.sh`](#3-build-api-java-exemplosh)
+    - [4) `redeploy.sh`](#4-redeploysh)
+  - [📊 Monitoramento](#-monitoramento)
+    - [5) `watch-pods.sh`](#5-watch-podssh)
+    - [6) `logs-pods.sh`](#6-logs-podssh)
+    - [7) `monitor-hpa.sh`](#7-monitor-hpash)
+    - [8) `apiservices-list-chech.sh`](#8-apiservices-list-chechsh)
+  - [🔍 Acesso \& Debug](#-acesso--debug)
+    - [9) `port-forward-pod.sh`](#9-port-forward-podsh)
+    - [10) `access-pod.sh`](#10-access-podsh)
+    - [11) `describe-pod.sh`](#11-describe-podsh)
 - [**Kubernetes**](#kubernetes)
   - [**Definição**](#definição)
   - [**Problema que ele resolve**](#problema-que-ele-resolve)
@@ -21,6 +37,64 @@
 - [Configuração no Kubernetes (ConfigMap e Variáveis de Ambiente)](#configuração-no-kubernetes-configmap-e-variáveis-de-ambiente)
 - [ConfigMap como Volume (Deep Dive)](#configmap-como-volume-deep-dive)
 - [Resources, Metrics Server e HPA no Kubernetes (com kind)](#resources-metrics-server-e-hpa-no-kubernetes-com-kind)
+
+
+# 📖 Guia de Referência: Menu de Ações
+
+O arquivo menu.sh centraliza a gestão da aplicação hello-k8s. Abaixo estão as descrições de cada comando disponível:
+
+## 💡 Como utilizar
+1. Certifique-se de que está na raiz do projeto.
+2. Execute `./menu.sh`.
+3. Digite o número da opção desejada e siga as instruções na tela.
+
+## 🏗️ Cluster & Deploy
+Gerenciamento da infraestrutura e publicação da aplicação.
+
+### 1) `up-cluster.sh`
+- Cria o cluster Kind (caso não exista) utilizando o arquivo de configuração.
+- Builda a imagem Docker e a carrega no cluster (Exemplo API Java Spring-boot).
+- Aplica os manifestos YAML e aguarda o rollout.
+
+### 2) `reset-cluster.sh`
+- Destrói o cluster.
+
+### 3) `build-api-java-exemplo.sh`
+- Para criar a API de exemplo.
+- Gerencia a versão no pom.xml (incremento de Patch ou Minor).
+- Compila a imagem Docker atualizada e injeta no Kind.
+
+### 4) `redeploy.sh`
+- Força o Kubernetes a reiniciar os Pods existentes (rollout restart).
+- Aplica novas configurações sem deletar o cluster.
+
+## 📊 Monitoramento
+Acompanhamento de saúde, escalonamento e logs.
+
+### 5) `watch-pods.sh`
+- Exibe em tempo real o status de cada Pod (Running, Terminating, Pending).
+
+### 6) `logs-pods.sh`
+- Inicia o Stern para exibir logs coloridos de todas as réplicas simultaneamente.
+
+### 7) `monitor-hpa.sh`
+- Monitora o consumo de CPU/Memória e dispara alertas visuais se os limites forem atingidos.
+
+### 8) `apiservices-list-chech.sh`
+- Valida se os serviços internos da API do Kubernetes estão operacionais.
+
+## 🔍 Acesso & Debug
+Interação direta com os containers para diagnóstico.
+
+### 9) `port-forward-pod.sh`
+- Mapeia a porta do Pod para o seu localhost, permitindo testar a API via navegador ou Postman.
+
+### 10) `access-pod.sh`
+- Permite escolher uma réplica específica e abrir um terminal interativo (sh) dentro do container.
+
+### 11) `describe-pod.sh`
+- Exibe os eventos detalhados do Kubernetes para entender por que um Pod falhou ao iniciar.
+
 
 # **Kubernetes**
 
