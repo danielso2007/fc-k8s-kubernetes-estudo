@@ -40,7 +40,9 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
-
+          envFrom:
+            - secretRef:
+                 name: hello-k8s-secret
           env:
             - name: APP_MESSAGE
               valueFrom:

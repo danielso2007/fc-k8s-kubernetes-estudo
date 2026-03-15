@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IMAGE_NAME=hello-k8s
-VERSION=0.0.1
+VERSION=0.1.0
 CLUSTER_NAME="lab-cluster"
 
 echo "🔨 Buildando imagem..."

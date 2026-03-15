@@ -7,10 +7,10 @@ IMAGE_NAME="hello-k8s:latest"
 
 echo "🚀 Criando cluster kind..."
 
-if ! kind get clusters | grep -q $CLUSTER_NAME; then
-    kind create cluster --config $KIND_CONFIG --name $CLUSTER_NAME
+if ! kind get clusters | grep -q "^${CLUSTER_NAME}$"; then
+kind create cluster --config $KIND_CONFIG --name $CLUSTER_NAME
 else
-    echo "⚠️ Cluster já existe."
+echo "⚠️ Cluster já existe."
 fi
 
 echo "📦 Buildando imagem..."
@@ -25,8 +25,11 @@ kind load docker-image $IMAGE_NAME --name $CLUSTER_NAME
 echo "📄 Aplicando manifestos Kubernetes..."
 kubectl apply -f .
 
-echo "⏳ Aguardando pods ficarem prontos..."
+echo "⏳ Aguardando rollout..."
 kubectl rollout status deployment hello-k8s --timeout=120s
+
+echo "⏳ Aguardando pods ficarem Ready..."
+kubectl wait --for=condition=Ready pod -l app=hello-k8s --timeout=120s
 
 echo ""
 echo "==================== 📊 ESTADO DO CLUSTER ===================="
@@ -56,7 +59,7 @@ echo "🔹 Services:"
 kubectl get svc -o wide
 echo ""
 
-echo "🔹 Endpoints:"
+echo "🔹 EndpointSlices:"
 kubectl get endpointslices
 echo ""
 

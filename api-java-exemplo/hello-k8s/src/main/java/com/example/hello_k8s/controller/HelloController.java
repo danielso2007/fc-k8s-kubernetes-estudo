@@ -53,4 +53,26 @@ public class HelloController {
         
         return ResponseEntity.ok(envVars);
     }
+
+    @Operation(
+        summary = "Busca credenciais do MongoDB", 
+        description = "Retorna especificamente as variáveis de usuário e senha do MongoDB configuradas no ambiente"
+    )
+    @ApiResponse(responseCode = "200", description = "Credenciais retornadas com sucesso")
+    @GetMapping("/v1/secrets")
+    public ResponseEntity<Map<String, String>> getMongoSecrets() {
+        log.info("Chamada recebida para buscar credenciais do MongoDB");
+        
+        Map<String, String> mongoSecrets = new TreeMap<>();
+        
+        // Busca as variáveis específicas do sistema
+        String user = System.getenv("DB_USER_MONGO");
+        String pass = System.getenv("DB_PASSWORD_MONGO");
+        
+        // Adiciona ao mapa apenas se não forem nulas (opcional)
+        mongoSecrets.put("DB_USER_MONGO", user != null ? user : "NOT_SET");
+        mongoSecrets.put("DB_PASSWORD_MONGO", pass != null ? pass : "NOT_SET");
+        
+        return ResponseEntity.ok(mongoSecrets);
+    }
 }

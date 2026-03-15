@@ -6,6 +6,7 @@ echo "🧹 Deletando recursos do cluster..."
 
 if kubectl cluster-info > /dev/null 2>&1; then
     kubectl delete all --all --all-namespaces
+    kubectl delete configmap,secret,ingress,pvc --all --all-namespaces --ignore-not-found
 fi
 
 echo "🧨 Deletando cluster kind..."
