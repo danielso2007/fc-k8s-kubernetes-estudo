@@ -13,7 +13,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>hello-k8s</artifactId>
-    <version>0.0.1</version>
+    <version>0.6.0</version>
     <name>hello-k8s</name>
     <description>Projeto otimizado para Cloud Native e K8s</description>
 

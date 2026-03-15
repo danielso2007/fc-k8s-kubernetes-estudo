@@ -1,3 +1,31 @@
+- [**Probes, Health Checks, Liveness, Readiness e StartupProbe no Kubernetes**](#probes-health-checks-liveness-readiness-e-startupprobe-no-kubernetes)
+- [**Tipos de Probes**](#tipos-de-probes)
+- [**Liveness Probe**](#liveness-probe)
+  - [**Conceito**](#conceito)
+- [**YAML de Liveness Probe**](#yaml-de-liveness-probe)
+- [**Readiness Probe**](#readiness-probe)
+  - [**Conceito**](#conceito-1)
+- [**YAML de Readiness Probe**](#yaml-de-readiness-probe)
+- [**Startup Probe**](#startup-probe)
+  - [**Conceito**](#conceito-2)
+- [**YAML de Startup Probe**](#yaml-de-startup-probe)
+- [**Exemplo completo no seu Deployment**](#exemplo-completo-no-seu-deployment)
+- [**Tipos de execução de Probes**](#tipos-de-execução-de-probes)
+  - [**HTTP**](#http)
+  - [**TCP**](#tcp)
+  - [**Exec**](#exec)
+- [**Comandos kubectl para trabalhar com probes**](#comandos-kubectl-para-trabalhar-com-probes)
+  - [**Ver pods**](#ver-pods)
+  - [**Ver detalhes do Pod**](#ver-detalhes-do-pod)
+  - [**Ver logs**](#ver-logs)
+  - [**Ver eventos do cluster**](#ver-eventos-do-cluster)
+  - [**Ver pods com status**](#ver-pods-com-status)
+  - [**Ver endpoint do service**](#ver-endpoint-do-service)
+- [**Testar manualmente o endpoint de health**](#testar-manualmente-o-endpoint-de-health)
+- [**Boas práticas**](#boas-práticas)
+- [**Referências**](#referências)
+
+
 # **Probes, Health Checks, Liveness, Readiness e StartupProbe no Kubernetes**
 
 No Kubernetes, **probes** são mecanismos que permitem ao cluster verificar o **estado de saúde de um container dentro de um Pod**.

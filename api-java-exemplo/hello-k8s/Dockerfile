@@ -16,7 +16,7 @@ RUN --mount=type=cache,id=maven-cache,target=/root/.m2 \
     mvn clean package -DskipTests
 
 # Extrai camadas do jar
-RUN java -Djarmode=layertools -jar target/hello-k8s-0.0.1.jar extract
+RUN java -Djarmode=layertools -jar target/hello-k8s-*.jar extract
 
 
 # ---------- RUNTIME STAGE ----------

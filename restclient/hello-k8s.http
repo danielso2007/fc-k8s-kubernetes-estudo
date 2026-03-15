@@ -1,22 +1,37 @@
 ### Configurações
 @baseUrl = http://localhost:8080/hello-k8s
 
-### Check de disponibilidade
-# Endpoint simples para verificar se a API está respondendo na raiz
+### 1. Check de disponibilidade
+# Verificação básica se a API está online
 GET {{baseUrl}}/v1/
 
-### Retorna saudação padrão
+### 2. Retorna saudação padrão
 # Retorna um objeto JSON com a mensagem clássica de Hello World
 GET {{baseUrl}}/v1/hello
 
-### Lista variáveis de ambiente
-# Retorna todas as variáveis de ambiente do sistema onde o container está rodando
+### 3. Lista variáveis de ambiente
+# Retorna todas as variáveis de ambiente do sistema no container
 GET {{baseUrl}}/v1/env
 
-### Busca credenciais do MongoDB
-# Retorna especificamente as variáveis de usuário e senha do MongoDB configuradas no ambiente
+### 4. Busca credenciais do MongoDB
+# Retorna usuário e senha do MongoDB configurados no ambiente
 GET {{baseUrl}}/v1/secrets
 
-### Força a falha da aplicação
-# Gera um erro fatal que encerra a JVM em 5 segundos, forçando o restart do Pod pelo Kubernetes
+---
+### OPERAÇÕES DE STRESS (K8S TESTING)
+
+### 5. Simula consumo de CPU
+# Inicia processo de carga para testar HPA ou limites de CPU
+GET {{baseUrl}}/v1/stress-cpu
+
+### 6. Simula consumo de Memória
+# Inicia alocação de memória para testar limites (OOMKill)
+GET {{baseUrl}}/v1/stress-memory
+
+### 7. Limpa o consumo de Memória
+# Libera os objetos alocados para normalizar o Pod
+GET {{baseUrl}}/v1/clear-memory
+
+### 8. Força a falha da aplicação (Crash)
+# Encerra a JVM em 5s para testar o restart do Pod (Liveness Probe)
 GET {{baseUrl}}/v1/crash

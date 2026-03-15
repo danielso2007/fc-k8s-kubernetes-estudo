@@ -1,0 +1,37 @@
+apiVersion: autoscaling/v2 # Versão da API que permite múltiplas métricas
+kind: HorizontalPodAutoscaler # Tipo do recurso para escalonamento horizontal
+
+metadata: # Metadados de identificação
+  name: hello-k8s-hpa # Nome do rastreador HPA
+
+spec: # Especificações de funcionamento
+  scaleTargetRef: # Referência do que será escalado
+    apiVersion: apps/v1 # API do recurso alvo
+    kind: Deployment # Tipo do alvo (Deployment)
+    name: hello-k8s # Nome do Deployment que será vigiado
+
+  minReplicas: 2 # Mínimo de instâncias mantidas vivas
+  maxReplicas: 10 # Máximo de instâncias (aumentei para dar margem)
+
+  metrics: # Lista de métricas (o HPA avaliará todas)
+  - type: Resource # Primeira métrica: Recurso de sistema
+    resource:
+      name: cpu # Monitoramento de processamento
+      target:
+        type: Utilization # Baseado em porcentagem
+        averageUtilization: 70 # Escala se a média de CPU passar de 70%
+  
+  - type: Resource # Segunda métrica: Recurso de sistema
+    resource:
+      name: memory # Monitoramento de memória RAM
+      target:
+        type: Utilization # Baseado em porcentagem
+        averageUtilization: 90 # Escala se a média de Memória passar de 90%
+
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60 # Espera apenas 1 minuto de métricas baixas (em vez de 5)
+      policies:
+      - type: Percent
+        value: 100               # Permite remover até 100% das réplicas excedentes de uma vez
+        periodSeconds: 15        # Avalia esta regra a cada 15 segundos

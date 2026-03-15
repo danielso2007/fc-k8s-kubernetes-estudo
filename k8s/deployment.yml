@@ -7,7 +7,7 @@ metadata:                    # Seção de metadados para identificar o objeto no
     app: hello-k8s           # Label principal que agrupa este recurso
 
 spec:                        # Especificação do estado desejado do Deployment
-  replicas: 3                # Define que o Kubernetes deve manter sempre 3 instâncias (Pods) rodando
+  replicas: 2                # Define que o Kubernetes deve manter sempre 3 instâncias (Pods) rodando
                              # 
   selector:                  # Define como o Deployment encontra os Pods que ele deve gerenciar
     matchLabels:             # O critério de seleção baseado em labels
@@ -26,7 +26,7 @@ spec:                        # Especificação do estado desejado do Deployment
     spec:                    # Especificação técnica de dentro do Pod
       containers:            # Lista de containers que rodarão dentro do Pod
         - name: hello-k8s    # Nome do container específico
-          image: hello-k8s:latest         # URL da imagem Docker no registro (tag latest)
+          image: hello-k8s:0.6.0         # URL da imagem Docker no registro (tag latest)
           imagePullPolicy: IfNotPresent   # Só baixa a imagem da web se ela não existir no nó local
           ports:                          # Lista de portas que o container utiliza
             - containerPort: 8080         # Porta interna onde a aplicação escuta o tráfego
@@ -62,11 +62,11 @@ spec:                        # Especificação do estado desejado do Deployment
 
           resources:                      # Gerenciamento de CPU e Memória (essencial para o cluster)
             requests:                     # O "piso": recurso garantido que o nó deve ter livre para o Pod entrar
-              memory: "128Mi"             # Reserva 128 Megabytes de RAM
-              cpu: "100m"                 # Reserva 0.1 (10%) de um núcleo de CPU
+              memory: "256Mi"             # Reserva 160 Megabytes de RAM
+              cpu: "100m"                  # Reserva 0.1 (10%) de um núcleo de CPU
             limits:                       # O "teto": recurso máximo que o container pode consumir
-              memory: "256Mi"             # Se passar disso, o container sofre OOMKill (reinicia)
-              cpu: "500m"                 # Se passar disso, o container sofre Throttling (fica lento)
+              memory: "384Mi"             # Se passar disso, o container sofre OOMKill (reinicia)
+              cpu: "300m"                 # Se passar disso, o container sofre Throttling (fica lento)
 
           envFrom:                        # Injeta múltiplas variáveis de ambiente de uma vez
             - secretRef:                  # Referência a um objeto do tipo Secret (dados sensíveis)
